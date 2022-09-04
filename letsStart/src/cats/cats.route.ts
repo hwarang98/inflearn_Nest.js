@@ -1,3 +1,4 @@
+// 고양이 라우터
 import { Cat, CatType } from "./cats.model";
 import { Router } from "express";
 import {
