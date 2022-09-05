@@ -20,7 +20,7 @@ export const readAllCat = (req: Request, res: Response) => {
   }
 };
 
-//* READ 특정 고양이 데이터 조회 -> GET
+//* READ 특정 고양이 데이터 조회 -> GET!
 export const readCat = (req: Request, res: Response) => {
   try {
     const params = req.params;
