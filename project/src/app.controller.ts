@@ -11,7 +11,6 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    // return this.appService.getHello();
-    return this.catsService.hiCatService();
+    return this.appService.getHello();
   }
 }
