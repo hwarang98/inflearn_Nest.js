@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -9,46 +10,43 @@ import {
   Post,
   Put,
   UseFilters,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PositiveIntPipe } from '../common/pipes/positivelnt.pipe';
-import { HttpExceptionFilter } from '../http-exception.filter';
+import { HttpExceptionFilter } from '../common/exceptions/http-exception.filter';
 import { CatsService } from './cats.service';
+import { SuccessInterceptor } from '../common/interceptors/success.interceptor';
+import { CatRequestDto } from './dto/cats.request.dto';
 
 @Controller('cats')
+@UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()
-  getAllCat() {
-    throw new HttpException('api is broken', 401);
-    return 'all cat';
-  }
-
-  @Get(':id')
-  getOneCat(@Param('id', ParseIntPipe, PositiveIntPipe) param: number) {
-    console.log(param);
-    console.log(typeof param);
-    return 'one cat';
+  getCurrentCat() {
+    return 'current cat';
   }
 
   @Post()
-  createCat() {
-    return 'create cat';
+  async signUp(@Body() body: CatRequestDto) {
+    console.log('body: ', body);
+    return await this.catsService.signup(body);
   }
 
-  @Put(':id')
-  updateCat() {
-    return 'put cat';
+  @Post('login')
+  logIn() {
+    return 'signup';
   }
 
-  @Patch(':id')
-  patchCat() {
-    return 'patch cat';
+  @Post('logout')
+  logOut() {
+    return 'logout';
   }
 
-  @Delete(':id')
-  deleteCat() {
-    return 'delete service';
+  @Post('upload/cats')
+  uploadCatImg() {
+    return 'uploadImg';
   }
 }
