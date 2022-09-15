@@ -10,7 +10,9 @@ import {
   Patch,
   Post,
   Put,
+  Req,
   UseFilters,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { PositiveIntPipe } from '../common/pipes/positivelnt.pipe';
@@ -22,6 +24,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ReadOnlyCat } from './dto/cat.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginRequestDto } from '../auth/dto/login.request';
+import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
@@ -33,8 +36,9 @@ export class CatsController {
   ) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard) // 인증 처리
   @ApiOperation({ summary: '현재 고양이 가져오기' })
-  getCurrentCat() {
+  getCurrentCat(@Req() req) {
     return 'current cat';
   }
 
