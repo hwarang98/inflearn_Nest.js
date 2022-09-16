@@ -25,6 +25,7 @@ import { ReadOnlyCat } from './dto/cat.dto';
 import { AuthService } from '../auth/auth.service';
 import { LoginRequestDto } from '../auth/dto/login.request';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
+import { CurrentUser } from '../common/decorators/user.decorator';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
@@ -38,8 +39,8 @@ export class CatsController {
   @Get()
   @UseGuards(JwtAuthGuard) // 인증 처리
   @ApiOperation({ summary: '현재 고양이 가져오기' })
-  getCurrentCat(@Req() req) {
-    return 'current cat';
+  getCurrentCat(@CurrentUser() cat) {
+    return cat.readOnlyData;
   }
 
   @Post()
@@ -56,12 +57,6 @@ export class CatsController {
   logIn(@Body() data: LoginRequestDto) {
     Logger.log('로그인 요청...', data);
     return this.authService.jwtLogIn(data);
-  }
-
-  @Post('logout')
-  @ApiOperation({ summary: '로그아웃' })
-  logOut() {
-    return 'logout';
   }
 
   @Post('upload/cats')
