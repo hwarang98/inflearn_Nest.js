@@ -11,7 +11,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // jwt에 대한 설정
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // 헤더에 토큰으로부터 추출
-      secretOrKey: 'secret', // 환경변수로 저장
+      secretOrKey: process.env.JWT_SECRET, // 환경변수로 저장
       ignoreExpiration: false, // 만료기간
     });
   }
