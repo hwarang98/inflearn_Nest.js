@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { create } from 'domain';
 import { Model } from 'mongoose';
@@ -25,5 +25,13 @@ export class CatsRepository {
   async findCatByIdWithoutPassword(catId: string): Promise<Cat | null> {
     const cat = await this.catModel.findById(catId).select('-password');
     return cat;
+  }
+
+  async findByIdAndUpdateImg(id: string, fileName: string) {
+    const cat = await this.catModel.findById(id);
+    cat.imgUrl = `http://localhost:8000/media/${fileName}`;
+    const newCat = await cat.save();
+    Logger.log('newCat: ', newCat);
+    return newCat.readOnlyData;
   }
 }
