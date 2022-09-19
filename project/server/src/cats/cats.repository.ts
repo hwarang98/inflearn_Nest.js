@@ -31,7 +31,11 @@ export class CatsRepository {
     const cat = await this.catModel.findById(id);
     cat.imgUrl = `http://localhost:8000/media/${fileName}`;
     const newCat = await cat.save();
-    Logger.log('newCat: ', newCat);
+    // Logger.log('newCat: ', newCat);
     return newCat.readOnlyData;
+  }
+
+  async findAll() {
+    return await this.catModel.find();
   }
 }

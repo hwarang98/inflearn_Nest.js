@@ -36,12 +36,18 @@ export class CatsService {
 
   async uploadImg(cat: Cat, files: Express.Multer.File[]) {
     const fileName = `cats/${files[0].filename}`;
-    Logger.log('fileName: ', fileName);
+    // Logger.log('fileName: ', fileName);
     const newCat = await this.catsRepository.findByIdAndUpdateImg(
       cat.id,
       fileName,
     );
-    Logger.log('newCat: ', newCat);
+    // Logger.log('newCat: ', newCat);
     return newCat;
+  }
+
+  async getAllCat() {
+    const allCat = await this.catsRepository.findAll();
+    const readonlyCats = allCat.map((cat) => cat.readOnlyData);
+    return readonlyCats;
   }
 }

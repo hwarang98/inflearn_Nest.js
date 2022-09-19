@@ -30,6 +30,7 @@ import { CurrentUser } from '../../common/decorators/user.decorator';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from '../../common/utils/multer.options';
 import { Cat } from '../cats.schema';
+import { throws } from 'assert';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
@@ -74,5 +75,11 @@ export class CatsController {
     console.log(files);
     // return { image: `http://localhost:8000/media/cats/${files[0].filename}` };
     return this.catsService.uploadImg(cat, files);
+  }
+
+  @Get('all')
+  @ApiOperation({ summary: '모든 고양이 가져오기' })
+  getAllCat() {
+    return this.catsService.getAllCat();
   }
 }
