@@ -1,7 +1,8 @@
 import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { create } from 'domain';
-import { Model, Types } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
+import { CommentsSchema } from '../comments/commnets.schema';
 import { Cat } from './cats.schema';
 import { CatRequestDto } from './dto/cats.request.dto';
 
@@ -38,6 +39,10 @@ export class CatsRepository {
   }
 
   async findAll() {
-    return await this.catModel.find();
+    const CommentsModel = mongoose.model('comments', CommentsSchema);
+    const result = await this.catModel
+      .find()
+      .populate('comments', CommentsModel);
+    return result;
   }
 }
